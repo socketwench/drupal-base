@@ -8,4 +8,4 @@ RUN apt-get update && apt-get install -y \
     libpng12-dev \
     libicu-dev
 
-RUN docker-php-ext-install gd json intl pdo pdo_mysql mbstring opcache
+RUN docker-php-ext-install gd json intl pdo pdo_mysql mbstring
