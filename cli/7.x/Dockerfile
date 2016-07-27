@@ -1,18 +1,15 @@
-FROM socketwench/drupal-cli:base
+FROM composer/composer:php5
 MAINTAINER tess@deninet.com
 
-# Manually install Drupal Console due to https://github.com/hechoendrupal/DrupalConsole/issues/2064
-RUN curl https://drupalconsole.com/installer -L -o drupal.phar && \
-    chmod +x drupal.phar && \
-    mv drupal.phar /usr/bin/drupal
+RUN composer global require drush/drush
 
-# COPY rebuild.sh /root/scripts/rebuild.sh
-# RUN chmod +x /root/scripts/rebuild.sh
-#
-# COPY phpunit.sh /root/scripts/phpunit.sh
-# RUN chmod +x /root/scripts/phpunit.sh
-#
-# COPY run-tests.sh /root/scripts/run-tests.sh
-# RUN chmod +x /root/scripts/run-tests.sh
+RUN apt-get update && \
+    apt-get -yq install supervisor
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /var/www/html
+
+CMD ["-n"]
+
+ENTRYPOINT ["/usr/bin/supervisord"]
