@@ -11,7 +11,7 @@ RUN cd /tmp && \
     phpize && \
     ./configure && \
     make && \
-    cp modules/xdebug.so /usr/local/lib/php/extensions/no-debug-non-zts-20151012
+    cp modules/xdebug.so /usr/local/lib/php/extensions/xdebug.so
 
 # Add custom PHP configuration changes from php.ini
 COPY php.ini /usr/local/etc/php/
