@@ -6,13 +6,19 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar && \
     chmod +x drupal.phar && \
     mv drupal.phar /usr/bin/drupal
 
-# COPY rebuild.sh /root/scripts/rebuild.sh
-# RUN chmod +x /root/scripts/rebuild.sh
-#
-# COPY phpunit.sh /root/scripts/phpunit.sh
-# RUN chmod +x /root/scripts/phpunit.sh
-#
-# COPY run-tests.sh /root/scripts/run-tests.sh
-# RUN chmod +x /root/scripts/run-tests.sh
+# Download xdebug
+ADD http://xdebug.org/files/xdebug-2.4.0.tgz /tmp/xdebug-2.4.0.tgz
+
+# Install xdebug
+RUN cd /tmp && \
+    tar -xzf xdebug-2.4.0.tgz && \
+    cd xdebug-2.4.0 && \
+    phpize && \
+    ./configure && \
+    make && \
+    cp modules/xdebug.so /usr/local/lib/php/extensions/xdebug.so
+
+# Add custom PHP configuration changes from php.ini
+COPY php.ini /usr/local/etc/php/
 
 WORKDIR /var/www/html
